@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from './Card';
 
-let POKEMON_LIMIT = 10; // adjustable by player (to make it more difficult)
+let POKEMON_LIMIT = 12; // adjustable by player (to make it more difficult)
 
 export default function PokemonList() {
   const [pokemonList, setPokemonList] = useState([]);
@@ -30,6 +30,6 @@ export default function PokemonList() {
   }, []);
   
   return (
-    <Card pokemons={pokemonList} />
+    <Card pokemons={pokemonList} setPokemonList={setPokemonList} />
   );
 }
