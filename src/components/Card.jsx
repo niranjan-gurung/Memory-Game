@@ -1,28 +1,21 @@
+import '../../public/styles/Card.css';
+
 export default function Card({ 
   pokemons, setPokemonList, 
-  currentScore, setCurrentScore, 
-  highScore, setHighScore,
-  pokemonsClicked, setPokemonsClicked }) {
+  pokemonsClicked, setPokemonsClicked,
+  setCurrentScore, resetGameState }) {
 
-  function setNewPokemonList() {
-    let temp = pokemons.slice();
-    shuffleArray(temp);
-    setPokemonList(temp);
+  function shuffleCards() {
+    const newList = shuffleArray(pokemons.slice());
+    setPokemonList(newList);
   }
 
   function handleClick(id) {
     // shuffle card orders 
-    setNewPokemonList();  
+    shuffleCards();  
 
     if (pokemonsClicked.includes(id)) {
-      // if card is already clicked:
-      // set new highscore..
-      // reset currentscore
-      // reset pokemonsClicked[] list
-      if (currentScore > highScore) 
-        setHighScore(currentScore);
-      setCurrentScore(0);
-      setPokemonsClicked(list => list = []);
+      resetGameState();
     } else {
       // store clicked pokemon to array (to track which ones have been clicked)
       setPokemonsClicked(list => list = [...list, id]);
@@ -31,25 +24,14 @@ export default function Card({
   }
 
   return (
-    <div style={{
-        display: "flex", 
-        justifyContent: "center", 
-        flexWrap: "wrap",
-        maxWidth: "1500px",
-        margin: "auto",
-        padding: "20px",
-        gap: "10px"
-      }}>
+    <div className="card-content">
       {pokemons.map((item) => {
         const { id, name } = item;
         const imgUrl = item.sprites.other.dream_world.front_default; 
         return (
-          <button key={id} 
-            style={{outline: "white 1px solid"}}
-            onClick={() => { 
-              handleClick(id);
-            }}>
-            <img src={imgUrl} alt="poke img" width="200px" height="200px"></img>
+          <button key={id}
+            onClick={() => handleClick(id)}>
+            <img src={imgUrl} alt="poke img"></img>
             <p>{name}</p>
           </button>
         );
@@ -64,4 +46,5 @@ function shuffleArray(array) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }

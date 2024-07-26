@@ -3,14 +3,10 @@ import Card from './Card';
 import '../../public/styles/App.css';
 
 export default function App() {
-  // difficulty settings:
-  // make this adjustable??
-  let POKEMON_LIMIT = 12;
- 
   return (
     <div>
       <Header />
-      <Game getPokemonLimit={POKEMON_LIMIT} />
+      <Game />
     </div>
   );
 }
@@ -29,11 +25,14 @@ function Header() {
   );
 }
 
-function Game({ getPokemonLimit }) {
+function Game() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonsClicked, setPokemonsClicked] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
+  const [pokemonAmount, setPokemonAmount] = useState(12);
+
+  const POKEMON_LIMIT = 36;
 
   function getPokemon(pokemons) {
     pokemons.map(async (item) => {
@@ -48,32 +47,65 @@ function Game({ getPokemonLimit }) {
       });
     });
   }
+
+  // set new highscore..
+  // reset currentscore
+  // reset pokemonsClicked[] list
+  function resetGameState() {
+    if (currentScore > highScore) 
+      setHighScore(currentScore);
+    currentScore > 0 && setCurrentScore(0);
+    setPokemonsClicked(list => list = []);
+  }
+
+  function clearPokemonList() {
+    setPokemonList(list => list = []);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    resetGameState();
+
+    const inputValue = e.target[0].value;
+
+    if (inputValue > POKEMON_LIMIT) {
+      console.error(`Error. Pokemon limit is ${POKEMON_LIMIT}`);
+    } else {
+      setPokemonAmount(inputValue);
+    }
+  }
   
   useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${getPokemonLimit}`)
+    clearPokemonList();
+
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${pokemonAmount}`)
     .then(res => res.json())
     .then(data => {
       const { results } = data;
       getPokemon(results);
     });
-  }, []);
+  }, [pokemonAmount]);
 
   return (
     <>
       <div>
         <p>Current Score: {currentScore}</p>
         <p>Best Score: {highScore}</p>
-        <h2>{currentScore == getPokemonLimit ? "Congratz, you won!" : ""}</h2>
+        <h2>{currentScore == pokemonAmount && "Congratz, you won!"}</h2>
+        <form method="post" onSubmit={handleSubmit}>
+          <input 
+            name="myInput" type="text" size="1"
+            defaultValue={pokemonAmount} />
+          <button type="submit">submit</button>
+        </form>
       </div>
       <Card 
         pokemons={pokemonList} 
         setPokemonList={setPokemonList} 
-        currentScore={currentScore}
-        setCurrentScore={setCurrentScore}
-        highScore={highScore}
-        setHighScore={setHighScore}
         pokemonsClicked={pokemonsClicked} 
-        setPokemonsClicked={setPokemonsClicked} />
+        setPokemonsClicked={setPokemonsClicked}
+        setCurrentScore={setCurrentScore}
+        resetGameState={resetGameState} />
     </>
   );
 }
