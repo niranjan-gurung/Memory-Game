@@ -2,7 +2,7 @@
   "name": "memory-game",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://niranjan-gurung.github.io/Memory-Game",
+  "homepage": "https://niranjan-gurung.github.io/Memory-Game/",
   "type": "module",
   "scripts": {
     "dev": "vite",
