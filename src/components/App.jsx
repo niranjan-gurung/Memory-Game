@@ -71,7 +71,7 @@ function Game() {
     const inputValue = e.target[0].value;
 
     if (inputValue > POKEMON_LIMIT) {
-      console.error(`Error. Pokemon limit is ${POKEMON_LIMIT}`);
+      alert(`Error. Pokemon limit is ${POKEMON_LIMIT}`);
     } else {
       setPokemonAmount(inputValue);
     }
@@ -91,7 +91,7 @@ function Game() {
   return (
     <>
       <div>
-        <span>Too easy? Challenge yourself by submitting a higher amount of cards to memorize!</span>
+        <span>Too easy? Challenge yourself by submitting a higher amount of cards to memorize! <b>Limited to {POKEMON_LIMIT} for now</b></span>
         <form className="card-input" method="post" onSubmit={handleSubmit}>
           <input 
             name="myInput" type="text" size="1"
