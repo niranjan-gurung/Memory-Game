@@ -17,7 +17,7 @@ function Header() {
       <div>
         <h1>Pokemon Memory Game</h1>
         <p>
-          Earn points by clicking the cards! Each cards can only be clicked once
+          Earn points by clicking the cards! Each cards can only be clicked once.
           If the same card is clicked more than once, its game over!
         </p>
       </div>
@@ -29,7 +29,7 @@ function Game() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonsClicked, setPokemonsClicked] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(localStorage.getItem("score") || 0);
   const [pokemonAmount, setPokemonAmount] = useState(12);
 
   const POKEMON_LIMIT = 36;
@@ -52,8 +52,10 @@ function Game() {
   // reset currentscore
   // reset pokemonsClicked[] list
   function resetGameState() {
-    if (currentScore > highScore) 
+    if (currentScore > highScore) {
       setHighScore(currentScore);
+      localStorage.setItem("score", currentScore);
+    }
     currentScore > 0 && setCurrentScore(0);
     setPokemonsClicked(list => list = []);
   }
@@ -89,15 +91,18 @@ function Game() {
   return (
     <>
       <div>
-        <p>Current Score: {currentScore}</p>
-        <p>Best Score: {highScore}</p>
-        <h2>{currentScore == pokemonAmount && "Congratz, you won!"}</h2>
-        <form method="post" onSubmit={handleSubmit}>
+        <span>Too easy? Challenge yourself by submitting a higher amount of cards to memorize!</span>
+        <form className="card-input" method="post" onSubmit={handleSubmit}>
           <input 
             name="myInput" type="text" size="1"
             defaultValue={pokemonAmount} />
           <button type="submit">submit</button>
         </form>
+        <div className="score">
+          <p>Current Score: {currentScore}</p>
+          <p>Best Score: {highScore}</p>
+          <h2>{currentScore == pokemonAmount && "Congratz, you won!"}</h2>
+        </div>
       </div>
       <Card 
         pokemons={pokemonList} 
