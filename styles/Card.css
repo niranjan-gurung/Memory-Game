@@ -1,0 +1,23 @@
+.card-content {
+  display: flex; 
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1500px;
+  margin: auto;
+  padding: 20px;
+  gap: 10px;
+}
+
+.card-content button {
+  border: 1px black red;
+  border-radius: 5%;
+
+  &:hover {
+    background-color: grey;
+  }
+}
+
+.card-content img {
+  width: 200px;
+  height: 200px;
+}

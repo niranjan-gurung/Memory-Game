@@ -1,0 +1,13 @@
+.card-input {
+  display: inline;
+  margin-left: 10px;
+}
+
+.score {
+  margin-top: 10px; 
+  font-weight: 700;
+}
+
+.score p {
+  margin: 0px;
+}
