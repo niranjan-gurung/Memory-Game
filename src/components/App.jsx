@@ -29,7 +29,7 @@ function Game() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonsClicked, setPokemonsClicked] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
-  const [highScore, setHighScore] = useState(localStorage.getItem("score") || 0);
+  const [highScore, setHighScore] = useState(sessionStorage.getItem("score") || 0);
   const [pokemonAmount, setPokemonAmount] = useState(12);
 
   const POKEMON_LIMIT = 36;
@@ -54,7 +54,7 @@ function Game() {
   function resetGameState() {
     if (currentScore > highScore) {
       setHighScore(currentScore);
-      localStorage.setItem("score", currentScore);
+      sessionStorage.setItem("score", currentScore);
     }
     currentScore > 0 && setCurrentScore(0);
     setPokemonsClicked(list => list = []);
